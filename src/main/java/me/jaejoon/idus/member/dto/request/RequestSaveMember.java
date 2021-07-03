@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jaejoon.idus.error.message.FieldValidErrorMessages;
 import me.jaejoon.idus.member.domain.Gender;
+import me.jaejoon.idus.member.domain.Member;
 
 /**
  * @author dkansk924@naver.com
@@ -46,4 +47,15 @@ public class RequestSaveMember {
     private String email;
 
     private Gender gender;
+
+    public Member toEntity() {
+        return Member.builder()
+            .name(name)
+            .nickName(nickName)
+            .password(password)
+            .tel(tel)
+            .email(email)
+            .gender(gender)
+            .build();
+    }
 }
