@@ -2,6 +2,8 @@ package me.jaejoon.idus.member.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,12 +44,13 @@ public class Member {
     @Column(name = "EMAIL", length = 100, nullable = false)
     private String email;
 
-    @Column(name = "GENDER")
-    private String gender;
+    @Column(name = "GENDER", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Builder
     private Member(String name, String nickName, String password, String tel, String email,
-        String gender) {
+        Gender gender) {
         this.name = name;
         this.nickName = nickName;
         this.password = password;
