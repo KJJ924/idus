@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.Builder;
 import lombok.Getter;
 import me.jaejoon.idus.error.message.ErrorCode;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,8 @@ public class ErrorResponse {
     private final int status;
     private final String message;
     private List<ErrorField> errors;
+
+
     private final LocalDateTime timeStamp = LocalDateTime.now();
 
     public ErrorResponse(ErrorCode errorCode) {
@@ -36,6 +39,12 @@ public class ErrorResponse {
         this.status = errorCode.getStatus().value();
         this.message = errorCode.getMessage();
         this.errors = createMessage(e);
+    }
+
+    @Builder
+    private ErrorResponse(int status, String message) {
+        this.status = status;
+        this.message = message;
     }
 
     private List<ErrorField> createMessage(MethodArgumentNotValidException e) {
