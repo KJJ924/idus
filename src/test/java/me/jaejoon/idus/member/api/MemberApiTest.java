@@ -6,8 +6,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.jaejoon.idus.error.message.ErrorCode;
 import me.jaejoon.idus.member.domain.Gender;
+import me.jaejoon.idus.member.domain.Member;
 import me.jaejoon.idus.member.dto.request.RequestSaveMember;
+import me.jaejoon.idus.member.repository.MemberRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +36,16 @@ class MemberApiTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    MemberRepository memberRepository;
+
+    @AfterEach
+    void clean() {
+        memberRepository.deleteAll();
+    }
+
     @Test
-    @DisplayName("회원 저장 성공")
+    @DisplayName("회원 저장(성공)")
     void memberSaveTest() throws Exception {
         //given
         RequestSaveMember requestSaveMember =
@@ -53,10 +65,88 @@ class MemberApiTest {
 
         //then
         actions.andExpect(status().isCreated());
-        actions.andExpect(jsonPath("$..[ 'name' ]").value("김재준"));
-        actions.andExpect(jsonPath("$..[ 'nickname' ]").value("nickname"));
-        actions.andExpect(jsonPath("$..[ 'tel' ]").value("0100000000"));
-        actions.andExpect(jsonPath("$..[ 'gender' ]").value("비공개"));
-        actions.andExpect(jsonPath("$..[ 'email' ]").value("test@email.com"));
+        actions.andExpect(jsonPath("$..[ 'name' ]").value(requestSaveMember.getName()));
+        actions.andExpect(jsonPath("$..[ 'nickname' ]").value(requestSaveMember.getNickname()));
+        actions.andExpect(jsonPath("$..[ 'tel' ]").value(requestSaveMember.getTel()));
+        actions
+            .andExpect(jsonPath("$..[ 'gender' ]").value(requestSaveMember.getGender().getName()));
+        actions.andExpect(jsonPath("$..[ 'email' ]").value(requestSaveMember.getEmail()));
     }
+
+
+    @Test
+    @DisplayName("회원 저장(실패) - 중복된 이메일")
+    void memberSaveTest_fail() throws Exception {
+        //given
+        Member alreadyMember = Member.builder()
+            .password("password")
+            .email("test@test.com")
+            .nickname("nickname")
+            .name("Name")
+            .tel("01012345678")
+            .gender(Gender.NONE)
+            .build();
+        memberRepository.save(alreadyMember);
+
+        RequestSaveMember requestSaveMember =
+            new RequestSaveMember(
+                "김재준",
+                "kjj",
+                "@Abcdef0123",
+                "0100000000",
+                "test@test.com",  //error point (중복된 이메일)
+                Gender.NONE);
+
+        String content = objectMapper.writeValueAsString(requestSaveMember);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/members")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content));
+
+        //then
+        actions.andExpect(status().isConflict());
+        actions.andExpect(
+            jsonPath("$..[ 'message' ]").value(ErrorCode.DUPLICATION_EMAIL.getMessage()));
+        actions.andExpect(jsonPath("$..[ 'status' ]").value(409));
+    }
+
+
+    @Test
+    @DisplayName("회원 저장(실패) - 중복된 별명")
+    void memberSaveTest_fail2() throws Exception {
+        //given
+        Member alreadyMember = Member.builder()
+            .password("password")
+            .email("test@test.com")
+            .nickname("nickname")
+            .name("Name")
+            .tel("01012345678")
+            .gender(Gender.NONE)
+            .build();
+        memberRepository.save(alreadyMember);
+
+        RequestSaveMember requestSaveMember =
+            new RequestSaveMember(
+                "김재준",
+                "nickname", //error point (중복된 닉네임)
+                "@Abcdef0123",
+                "0100000000",
+                "test@email.com",
+                Gender.NONE);
+
+        String content = objectMapper.writeValueAsString(requestSaveMember);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/members")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content));
+
+        //then
+        actions.andExpect(status().isConflict());
+        actions.andExpect(
+            jsonPath("$..[ 'message' ]").value(ErrorCode.DUPLICATION_NICKNAME.getMessage()));
+        actions.andExpect(jsonPath("$..[ 'status' ]").value(409));
+    }
+
 }
