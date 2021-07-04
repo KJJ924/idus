@@ -19,7 +19,7 @@ import me.jaejoon.idus.member.domain.Member;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class RequestSaveMember {
 
     @NotEmpty
