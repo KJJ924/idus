@@ -30,7 +30,7 @@ public class RequestSaveMember {
     @NotEmpty
     @Pattern(regexp = "[a-z]+$", message = FieldValidErrorMessages.NICK_NAME)
     @Size(max = 30)
-    private String nickName;
+    private String nickname;
 
     @Pattern(regexp = "^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[#?!@$ %^&*-]).{10,}",
         message = FieldValidErrorMessages.PASSWORD)
@@ -51,7 +51,7 @@ public class RequestSaveMember {
     public Member toEntity() {
         return Member.builder()
             .name(name)
-            .nickName(nickName)
+            .nickname(nickname)
             .password(password)
             .tel(tel)
             .email(email)

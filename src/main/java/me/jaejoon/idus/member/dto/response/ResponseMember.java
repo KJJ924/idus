@@ -26,7 +26,7 @@ public class ResponseMember {
 
     private ResponseMember(Member member) {
         this.name = member.getName();
-        this.nickname = member.getNickName();
+        this.nickname = member.getNickname();
         this.tel = member.getTel();
         this.email = member.getEmail();
         this.gender = member.getGender().getName();

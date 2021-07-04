@@ -39,7 +39,7 @@ public class MemberService {
         if (memberRepository.existsByEmail(requestSaveMember.getEmail())) {
             throw new DuplicateEmailException();
         }
-        if (memberRepository.existsByNickName(requestSaveMember.getNickname())) {
+        if (memberRepository.existsByNickname(requestSaveMember.getNickname())) {
             throw new DuplicateNickname();
         }
     }
