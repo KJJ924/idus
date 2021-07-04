@@ -22,28 +22,28 @@ import me.jaejoon.idus.member.domain.Member;
 @AllArgsConstructor
 public class RequestSaveMember {
 
-    @NotEmpty
-    @Pattern(regexp = "[가-힣a-zA-Z]+$", message = FieldValidErrorMessages.NAME)
+
     @Size(max = 20)
+    @Pattern(regexp = "[가-힣a-zA-Z]+$", message = FieldValidErrorMessages.NAME)
     private String name;
 
-    @NotEmpty
-    @Pattern(regexp = "[a-z]+$", message = FieldValidErrorMessages.NICK_NAME)
+
     @Size(max = 30)
+    @Pattern(regexp = "[a-z]+$", message = FieldValidErrorMessages.NICK_NAME)
     private String nickname;
 
+    @Size(min = 10)
     @Pattern(regexp = "^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[#?!@$ %^&*-]).{10,}",
         message = FieldValidErrorMessages.PASSWORD)
     private String password;
 
-    @NotEmpty
     @Size(max = 20)
     @Pattern(regexp = "^[0-9]+$", message = FieldValidErrorMessages.TEL)
     private String tel;
 
+    @Size(max = 100)
     @NotEmpty
     @Email(message = FieldValidErrorMessages.EMAIL)
-    @Size(max = 100)
     private String email;
 
     private Gender gender;

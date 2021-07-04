@@ -1,11 +1,16 @@
 package me.jaejoon.idus.member.exception;
 
+import me.jaejoon.idus.error.exception.BusinessException;
+import me.jaejoon.idus.error.message.ErrorCode;
+
 /**
  * @author dkansk924@naver.com
  * @since 2021/07/04
  */
 
-//fixme 상위 에러추가
-public class DuplicateNickname extends RuntimeException {
+public class DuplicateNickname extends BusinessException {
 
+    public DuplicateNickname() {
+        super(ErrorCode.DUPLICATION_NICKNAME);
+    }
 }
