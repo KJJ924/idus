@@ -33,7 +33,7 @@ public class Member {
     private String name;
 
     @Column(name = "NICK_NAME", unique = true, length = 30, nullable = false)
-    private String nickName;
+    private String nickname;
 
     @Column(name = "PASSWORD", nullable = false)
     private String password;
@@ -49,13 +49,17 @@ public class Member {
     private Gender gender;
 
     @Builder
-    private Member(String name, String nickName, String password, String tel, String email,
+    private Member(String name, String nickname, String password, String tel, String email,
         Gender gender) {
         this.name = name;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.password = password;
         this.tel = tel;
         this.email = email;
         this.gender = gender;
+    }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
     }
 }
