@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-    //fixme 유저 권한 추가해야함
 
     private final JwtProperties jwtProperties;
     private static final String EMAIL = "email";
@@ -37,13 +36,15 @@ public class JwtService {
         verifier.verify(decode);
 
         String email = decode.getClaim(EMAIL).asString();
-        return new AuthUser(email);
+        String role = decode.getClaim(ROLE).asString();
+        return new AuthUser(email, role);
     }
 
     public String encode(Member member) {
         Date now = new Date();
         return JWT.create().withJWTId(UUID.randomUUID().toString())
             .withClaim(EMAIL, member.getEmail())
+            .withClaim(ROLE, member.getRole().getValue())
             .withClaim(ISSUED_AT, now)
             .withClaim(EXPIRY_TIME, new Date(now.getTime() + Duration.ofMinutes(30).toMillis()))
             .sign(getAlgorithm());

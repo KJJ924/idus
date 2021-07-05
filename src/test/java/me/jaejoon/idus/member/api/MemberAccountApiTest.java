@@ -11,6 +11,7 @@ import me.jaejoon.idus.error.message.ErrorCode;
 import me.jaejoon.idus.member.authtesthelper.WithAuthUser;
 import me.jaejoon.idus.member.domain.Gender;
 import me.jaejoon.idus.member.domain.Member;
+import me.jaejoon.idus.member.domain.Role;
 import me.jaejoon.idus.member.dto.request.RequestMemberLogin;
 import me.jaejoon.idus.member.dto.request.RequestSaveMember;
 import me.jaejoon.idus.member.repository.MemberRepository;
@@ -63,7 +64,8 @@ class MemberAccountApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         String content = objectMapper.writeValueAsString(requestSaveMember);
 
         //when
@@ -103,7 +105,8 @@ class MemberAccountApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@test.com",  //error point (중복된 이메일)
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         String content = objectMapper.writeValueAsString(requestSaveMember);
 
@@ -141,7 +144,8 @@ class MemberAccountApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         String content = objectMapper.writeValueAsString(requestSaveMember);
 
@@ -170,7 +174,8 @@ class MemberAccountApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
 
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
@@ -202,7 +207,8 @@ class MemberAccountApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
 
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
@@ -234,7 +240,8 @@ class MemberAccountApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
 
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
@@ -266,7 +273,8 @@ class MemberAccountApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
 
         //when
@@ -292,7 +300,8 @@ class MemberAccountApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
 
         //when

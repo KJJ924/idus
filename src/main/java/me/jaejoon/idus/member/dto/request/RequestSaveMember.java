@@ -2,6 +2,7 @@ package me.jaejoon.idus.member.dto.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import me.jaejoon.idus.error.message.FieldValidErrorMessages;
 import me.jaejoon.idus.member.domain.Gender;
 import me.jaejoon.idus.member.domain.Member;
+import me.jaejoon.idus.member.domain.Role;
 
 /**
  * @author dkansk924@naver.com
@@ -46,7 +48,11 @@ public class RequestSaveMember {
     @Email(message = FieldValidErrorMessages.EMAIL)
     private String email;
 
+    @NotNull
     private Gender gender;
+
+    @NotNull
+    private Role role;
 
     public Member toEntity() {
         return Member.builder()
@@ -56,6 +62,7 @@ public class RequestSaveMember {
             .tel(tel)
             .email(email)
             .gender(gender)
+            .role(role)
             .build();
     }
 }

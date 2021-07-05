@@ -9,6 +9,7 @@ import me.jaejoon.idus.auth.service.JwtService;
 import me.jaejoon.idus.error.message.ErrorCode;
 import me.jaejoon.idus.member.domain.Gender;
 import me.jaejoon.idus.member.domain.Member;
+import me.jaejoon.idus.member.domain.Role;
 import me.jaejoon.idus.member.dto.request.RequestMemberLogin;
 import me.jaejoon.idus.member.dto.request.RequestSaveMember;
 import me.jaejoon.idus.member.dto.response.ResponseLoginToken;
@@ -57,7 +58,8 @@ class MemberServiceTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         //when
         memberService.save(requestSaveMember);
 
@@ -79,7 +81,8 @@ class MemberServiceTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         //when
         memberService.save(requestSaveMember);
 
@@ -110,7 +113,8 @@ class MemberServiceTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@test.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         //when
         assertThatThrownBy(() -> memberService.save(requestSaveMember))
@@ -141,7 +145,8 @@ class MemberServiceTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         //when
         assertThatThrownBy(() -> memberService.save(requestSaveMember))
@@ -163,7 +168,8 @@ class MemberServiceTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
             .email("test@email.com")
@@ -190,7 +196,8 @@ class MemberServiceTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
             .email("test@email.com")
@@ -216,7 +223,8 @@ class MemberServiceTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
             .email("kjj@email.com") //error point
@@ -242,10 +250,11 @@ class MemberServiceTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
 
-        AuthUser user = new AuthUser("test@email.com");
+        AuthUser user = new AuthUser("test@email.com", Role.USER.getValue());
 
         //when
         ResponseMember member = memberService.getMemberDetail(user);
@@ -261,7 +270,7 @@ class MemberServiceTest {
     @DisplayName("이메일로 회원 조회(실패) - 존재하지 않는 회원")
     void findByEmailMember_fail() {
         //given
-        AuthUser user = new AuthUser("test@email.com");
+        AuthUser user = new AuthUser("test@email.com", Role.USER.getValue());
         //when
         assertThatThrownBy(() -> memberService.getMemberDetail(user))
             //then

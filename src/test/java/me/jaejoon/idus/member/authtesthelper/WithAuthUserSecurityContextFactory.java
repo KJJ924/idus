@@ -18,7 +18,7 @@ public class WithAuthUserSecurityContextFactory implements
         String email = annotation.email();
         String role = annotation.role();
 
-        AuthUser authUser = new AuthUser(email);
+        AuthUser authUser = new AuthUser(email, role);
         JwtAuthToken authentication = new JwtAuthToken(authUser);
 
         SecurityContext context = SecurityContextHolder.getContext();
