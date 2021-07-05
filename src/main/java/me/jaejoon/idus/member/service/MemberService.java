@@ -1,11 +1,15 @@
 package me.jaejoon.idus.member.service;
 
 import lombok.RequiredArgsConstructor;
+import me.jaejoon.idus.auth.service.JwtService;
 import me.jaejoon.idus.member.domain.Member;
+import me.jaejoon.idus.member.dto.request.RequestMemberLogin;
 import me.jaejoon.idus.member.dto.request.RequestSaveMember;
+import me.jaejoon.idus.member.dto.response.ResponseLoginToken;
 import me.jaejoon.idus.member.dto.response.ResponseMember;
 import me.jaejoon.idus.member.exception.DuplicateEmailException;
 import me.jaejoon.idus.member.exception.DuplicateNickname;
+import me.jaejoon.idus.member.exception.LoginFailedException;
 import me.jaejoon.idus.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,9 +25,9 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public ResponseMember save(RequestSaveMember requestSaveMember) {
-
         memberSaveValidationCheck(requestSaveMember);
         String encodePW = passwordEncoder.encode(requestSaveMember.getPassword());
 
@@ -34,6 +38,20 @@ public class MemberService {
         return ResponseMember.toMapper(member);
     }
 
+    public ResponseLoginToken login(RequestMemberLogin requestMemberLogin) {
+        Member member = memberRepository.findByEmail(requestMemberLogin.getEmail())
+            .orElseThrow(LoginFailedException::new);
+
+        checkPassword(requestMemberLogin.getPassword(), member.getPassword());
+
+        return new ResponseLoginToken(jwtService.encode(member));
+    }
+
+    private void checkPassword(String requestPassword, String referencePassword) {
+        if (!passwordEncoder.matches(requestPassword, referencePassword)) {
+            throw new LoginFailedException();
+        }
+    }
 
     private void memberSaveValidationCheck(RequestSaveMember requestSaveMember) {
         if (memberRepository.existsByEmail(requestSaveMember.getEmail())) {

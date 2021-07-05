@@ -9,8 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.jaejoon.idus.error.message.ErrorCode;
 import me.jaejoon.idus.member.domain.Gender;
 import me.jaejoon.idus.member.domain.Member;
+import me.jaejoon.idus.member.dto.request.RequestMemberLogin;
 import me.jaejoon.idus.member.dto.request.RequestSaveMember;
 import me.jaejoon.idus.member.repository.MemberRepository;
+import me.jaejoon.idus.member.service.MemberService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +40,9 @@ class MemberApiTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    MemberService memberService;
 
     @AfterEach
     void clean() {
@@ -149,4 +154,100 @@ class MemberApiTest {
         actions.andExpect(jsonPath("$..[ 'status' ]").value(409));
     }
 
+
+    @Test
+    @DisplayName("회원 로그인 성공")
+    void member_login() throws Exception {
+
+        //given
+        RequestSaveMember requestSaveMember =
+            new RequestSaveMember(
+                "김재준",
+                "nickname",
+                "@Abcdef0123",
+                "0100000000",
+                "test@email.com",
+                Gender.NONE);
+        memberService.save(requestSaveMember);
+
+        RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
+            .email("test@email.com")
+            .password("@Abcdef0123")
+            .build();
+        String content = objectMapper.writeValueAsString(requestMemberLogin);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/members/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content));
+
+        //then
+        actions.andExpect(status().isOk());
+        actions.andExpect(jsonPath("$..[ 'token' ]").exists());
+    }
+
+
+    @Test
+    @DisplayName("회원 로그인(실패) - pw 틀린경우")
+    void member_login_fail() throws Exception {
+
+        //given
+        RequestSaveMember requestSaveMember =
+            new RequestSaveMember(
+                "김재준",
+                "nickname",
+                "@Abcdef0123",
+                "0100000000",
+                "test@email.com",
+                Gender.NONE);
+        memberService.save(requestSaveMember);
+
+        RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
+            .email("test@email.com")
+            .password("test") // errorPoint
+            .build();
+        String content = objectMapper.writeValueAsString(requestMemberLogin);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/members/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content));
+
+        //then
+        actions.andExpect(status().isBadRequest());
+        actions.andExpect(jsonPath("$..[ 'message' ]").value(ErrorCode.LOGIN_FAILED.getMessage()));
+        actions.andExpect(jsonPath("$..[ 'status' ]").value(400));
+    }
+
+    @Test
+    @DisplayName("회원 로그인(실패) - 해당 ID(email) 없는 경우")
+    void member_login_fail2() throws Exception {
+
+        //given
+        RequestSaveMember requestSaveMember =
+            new RequestSaveMember(
+                "김재준",
+                "nickname",
+                "@Abcdef0123",
+                "0100000000",
+                "test@email.com",
+                Gender.NONE);
+        memberService.save(requestSaveMember);
+
+        RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
+            .email("kjj@email.com") // errorPoint
+            .password("@Abcdef0123")
+            .build();
+        String content = objectMapper.writeValueAsString(requestMemberLogin);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/members/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content));
+
+        //then
+        actions.andExpect(status().isBadRequest());
+        actions.andExpect(jsonPath("$..[ 'message' ]").value(ErrorCode.LOGIN_FAILED.getMessage()));
+        actions.andExpect(jsonPath("$..[ 'status' ]").value(400));
+    }
 }
