@@ -10,6 +10,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import me.jaejoon.idus.error.message.FieldValidErrorMessages;
 import me.jaejoon.idus.member.domain.Gender;
+import me.jaejoon.idus.member.domain.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,8 @@ class RequestSaveMemberTest {
                 "@Kk12345678",
                 "01000000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         //when
         Set<ConstraintViolation<RequestSaveMember>> violations = validator
@@ -67,7 +69,8 @@ class RequestSaveMemberTest {
                 "@Kk12345678",
                 "01000000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         //when
         Set<ConstraintViolation<RequestSaveMember>> violations = validator
@@ -94,7 +97,8 @@ class RequestSaveMemberTest {
                 password,// ErrorPoint
                 "01000000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         //when
         Set<ConstraintViolation<RequestSaveMember>> violations = validator
@@ -119,7 +123,8 @@ class RequestSaveMemberTest {
                 "@Abcdefgh012",
                 "010000000A", // Error Point
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         //when
         Set<ConstraintViolation<RequestSaveMember>> violations = validator
@@ -144,7 +149,8 @@ class RequestSaveMemberTest {
                 "@Abcdefgh012",
                 "0100000000",
                 "testemail.com",  // Error Point
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         //when
         Set<ConstraintViolation<RequestSaveMember>> violations = validator

@@ -48,15 +48,20 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(name = "ROLE")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Builder
     private Member(String name, String nickname, String password, String tel, String email,
-        Gender gender) {
+        Gender gender, Role role) {
         this.name = name;
         this.nickname = nickname;
         this.password = password;
         this.tel = tel;
         this.email = email;
         this.gender = gender;
+        this.role = role;
     }
 
     public void updatePassword(String newPassword) {

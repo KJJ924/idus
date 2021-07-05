@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,12 +62,17 @@ public class ErrorResponse {
 
         private ErrorField(FieldError fieldError) {
             this.field = fieldError.getField();
-            this.value = Objects.requireNonNull(fieldError.getRejectedValue()).toString();
+            this.value = checkValue(fieldError.getRejectedValue());
+
             this.reason = fieldError.getDefaultMessage();
         }
 
         public static ErrorField mapper(FieldError fieldError) {
             return new ErrorField(fieldError);
+        }
+
+        public String checkValue(Object rejectedValue) {
+            return (rejectedValue == null) ? null : rejectedValue.toString();
         }
     }
 }

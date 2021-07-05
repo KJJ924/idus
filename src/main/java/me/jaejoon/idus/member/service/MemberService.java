@@ -1,6 +1,7 @@
 package me.jaejoon.idus.member.service;
 
 import lombok.RequiredArgsConstructor;
+import me.jaejoon.idus.auth.authentication.AuthUser;
 import me.jaejoon.idus.auth.service.JwtService;
 import me.jaejoon.idus.member.domain.Member;
 import me.jaejoon.idus.member.dto.request.RequestMemberLogin;
@@ -10,6 +11,7 @@ import me.jaejoon.idus.member.dto.response.ResponseMember;
 import me.jaejoon.idus.member.exception.DuplicateEmailException;
 import me.jaejoon.idus.member.exception.DuplicateNickname;
 import me.jaejoon.idus.member.exception.LoginFailedException;
+import me.jaejoon.idus.member.exception.NotFoundMemberException;
 import me.jaejoon.idus.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,6 +49,16 @@ public class MemberService {
         return new ResponseLoginToken(jwtService.encode(member));
     }
 
+    public ResponseMember getMemberDetail(AuthUser authUser) {
+        Member member = findByEmailMember(authUser.getEmail());
+        return ResponseMember.toMapper(member);
+    }
+
+    private Member findByEmailMember(String email) {
+        return memberRepository.findByEmail(email)
+            .orElseThrow(NotFoundMemberException::new);
+    }
+
     private void checkPassword(String requestPassword, String referencePassword) {
         if (!passwordEncoder.matches(requestPassword, referencePassword)) {
             throw new LoginFailedException();
@@ -61,4 +73,6 @@ public class MemberService {
             throw new DuplicateNickname();
         }
     }
+
+
 }

@@ -1,14 +1,17 @@
 package me.jaejoon.idus.member.api;
 
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.jaejoon.idus.error.message.ErrorCode;
+import me.jaejoon.idus.member.authtesthelper.WithAuthUser;
 import me.jaejoon.idus.member.domain.Gender;
 import me.jaejoon.idus.member.domain.Member;
+import me.jaejoon.idus.member.domain.Role;
 import me.jaejoon.idus.member.dto.request.RequestMemberLogin;
 import me.jaejoon.idus.member.dto.request.RequestSaveMember;
 import me.jaejoon.idus.member.repository.MemberRepository;
@@ -19,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -30,7 +34,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class MemberApiTest {
+class MemberAccountApiTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -60,11 +64,12 @@ class MemberApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         String content = objectMapper.writeValueAsString(requestSaveMember);
 
         //when
-        ResultActions actions = mockMvc.perform(post("/members")
+        ResultActions actions = mockMvc.perform(post("/members/signup")
             .contentType(MediaType.APPLICATION_JSON)
             .content(content));
 
@@ -100,12 +105,13 @@ class MemberApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@test.com",  //error point (중복된 이메일)
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         String content = objectMapper.writeValueAsString(requestSaveMember);
 
         //when
-        ResultActions actions = mockMvc.perform(post("/members")
+        ResultActions actions = mockMvc.perform(post("/members/signup")
             .contentType(MediaType.APPLICATION_JSON)
             .content(content));
 
@@ -138,12 +144,13 @@ class MemberApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
 
         String content = objectMapper.writeValueAsString(requestSaveMember);
 
         //when
-        ResultActions actions = mockMvc.perform(post("/members")
+        ResultActions actions = mockMvc.perform(post("/members/signup")
             .contentType(MediaType.APPLICATION_JSON)
             .content(content));
 
@@ -167,7 +174,8 @@ class MemberApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
 
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
@@ -199,7 +207,8 @@ class MemberApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
 
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
@@ -231,7 +240,8 @@ class MemberApiTest {
                 "@Abcdef0123",
                 "0100000000",
                 "test@email.com",
-                Gender.NONE);
+                Gender.NONE,
+                Role.USER);
         memberService.save(requestSaveMember);
 
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
@@ -250,4 +260,62 @@ class MemberApiTest {
         actions.andExpect(jsonPath("$..[ 'message' ]").value(ErrorCode.LOGIN_FAILED.getMessage()));
         actions.andExpect(jsonPath("$..[ 'status' ]").value(400));
     }
+
+
+    @Test
+    @DisplayName("본인 상세 정보보기(실패) - 인증 token 값이 없는경우")
+    void memberDetail_fail() throws Exception {
+        //given
+        RequestSaveMember requestSaveMember =
+            new RequestSaveMember(
+                "김재준",
+                "nickname",
+                "@Abcdef0123",
+                "0100000000",
+                "test@email.com",
+                Gender.NONE,
+                Role.USER);
+        memberService.save(requestSaveMember);
+
+        //when
+        ResultActions actions = mockMvc.perform(get("/members/personal-info")
+            .header(HttpHeaders.AUTHORIZATION, ""));
+
+        //then
+        actions.andExpect(status().isUnauthorized());
+        actions.andExpect(jsonPath("$..[ 'message' ]")
+            .value(ErrorCode.NOT_EXISTENCE_OR_INVALID_TOKEN.getMessage()));
+        actions.andExpect(jsonPath("$..[ 'status' ]").value(401));
+    }
+
+    @Test
+    @DisplayName("본인 상세 정보보기(성공)")
+    @WithAuthUser(email = "test@email.com")
+    void memberDetail() throws Exception {
+        //given
+        RequestSaveMember requestSaveMember =
+            new RequestSaveMember(
+                "김재준",
+                "nickname",
+                "@Abcdef0123",
+                "0100000000",
+                "test@email.com",
+                Gender.NONE,
+                Role.USER);
+        memberService.save(requestSaveMember);
+
+        //when
+        ResultActions actions = mockMvc.perform(get("/members/personal-info"));
+
+        //then
+        actions.andExpect(status().isOk());
+        actions.andExpect(jsonPath("$..[ 'name' ]").value(requestSaveMember.getName()));
+        actions.andExpect(jsonPath("$..[ 'nickname' ]").value(requestSaveMember.getNickname()));
+        actions.andExpect(jsonPath("$..[ 'tel' ]").value(requestSaveMember.getTel()));
+        actions
+            .andExpect(jsonPath("$..[ 'gender' ]").value(requestSaveMember.getGender().getName()));
+        actions.andExpect(jsonPath("$..[ 'email' ]").value(requestSaveMember.getEmail()));
+
+    }
+
 }
