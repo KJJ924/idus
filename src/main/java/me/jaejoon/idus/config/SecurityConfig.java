@@ -1,9 +1,11 @@
 package me.jaejoon.idus.config;
 
 import lombok.RequiredArgsConstructor;
+import me.jaejoon.idus.auth.CustomAccessDeniedHandler;
 import me.jaejoon.idus.auth.CustomAuthenticationEntryPoint;
 import me.jaejoon.idus.auth.JwtAuthenticationFilter;
 import me.jaejoon.idus.auth.JwtAuthenticationProvider;
+import me.jaejoon.idus.member.domain.Role;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
     protected static final String[] PUBLIC_URIS = {
@@ -48,9 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
             .antMatchers(PUBLIC_URIS).permitAll()
+            .antMatchers("/admin/**").hasAnyAuthority(Role.ADMIN.getValue())
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()
+            .accessDeniedHandler(customAccessDeniedHandler)
             .authenticationEntryPoint(customAuthenticationEntryPoint);
     }
 }
