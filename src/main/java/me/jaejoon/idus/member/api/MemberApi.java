@@ -2,7 +2,9 @@ package me.jaejoon.idus.member.api;
 
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import me.jaejoon.idus.member.dto.request.RequestMemberLogin;
 import me.jaejoon.idus.member.dto.request.RequestSaveMember;
+import me.jaejoon.idus.member.dto.response.ResponseLoginToken;
 import me.jaejoon.idus.member.dto.response.ResponseMember;
 import me.jaejoon.idus.member.service.MemberService;
 import org.springframework.http.HttpStatus;
@@ -29,5 +31,11 @@ public class MemberApi {
         @Valid @RequestBody RequestSaveMember requestMember) {
         ResponseMember member = memberService.save(requestMember);
         return ResponseEntity.status(HttpStatus.CREATED).body(member);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ResponseLoginToken> login(
+        @RequestBody @Valid RequestMemberLogin requestMemberLogin) {
+        return ResponseEntity.ok(memberService.login(requestMemberLogin));
     }
 }

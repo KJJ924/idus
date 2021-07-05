@@ -45,7 +45,7 @@ public class JwtService {
         return JWT.create().withJWTId(UUID.randomUUID().toString())
             .withClaim(EMAIL, member.getEmail())
             .withClaim(ISSUED_AT, now)
-            .withClaim(EXPIRY_TIME, new Date(now.getTime() + Duration.ofMinutes(1).toMillis()))
+            .withClaim(EXPIRY_TIME, new Date(now.getTime() + Duration.ofMinutes(30).toMillis()))
             .sign(getAlgorithm());
     }
 
