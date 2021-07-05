@@ -19,8 +19,8 @@ public enum ErrorCode {
 
     //Member
     DUPLICATION_NICKNAME(HttpStatus.CONFLICT, "이미 존재하는 닉네임 입니다."),
-    DUPLICATION_EMAIL(HttpStatus.CONFLICT, "이미 존재하는 이메일 입니다.");
-
+    DUPLICATION_EMAIL(HttpStatus.CONFLICT, "이미 존재하는 이메일 입니다."),
+    NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "회원이 존재하지 않습니다.");
 
     private final HttpStatus status;
     private final String message;

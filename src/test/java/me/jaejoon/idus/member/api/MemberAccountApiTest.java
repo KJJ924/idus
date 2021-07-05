@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class MemberApiTest {
+class MemberAccountApiTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -64,7 +64,7 @@ class MemberApiTest {
         String content = objectMapper.writeValueAsString(requestSaveMember);
 
         //when
-        ResultActions actions = mockMvc.perform(post("/members")
+        ResultActions actions = mockMvc.perform(post("/members/signup")
             .contentType(MediaType.APPLICATION_JSON)
             .content(content));
 
@@ -105,7 +105,7 @@ class MemberApiTest {
         String content = objectMapper.writeValueAsString(requestSaveMember);
 
         //when
-        ResultActions actions = mockMvc.perform(post("/members")
+        ResultActions actions = mockMvc.perform(post("/members/signup")
             .contentType(MediaType.APPLICATION_JSON)
             .content(content));
 
@@ -143,7 +143,7 @@ class MemberApiTest {
         String content = objectMapper.writeValueAsString(requestSaveMember);
 
         //when
-        ResultActions actions = mockMvc.perform(post("/members")
+        ResultActions actions = mockMvc.perform(post("/members/signup")
             .contentType(MediaType.APPLICATION_JSON)
             .content(content));
 

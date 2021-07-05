@@ -5,7 +5,6 @@ import me.jaejoon.idus.auth.CustomAuthenticationEntryPoint;
 import me.jaejoon.idus.auth.JwtAuthenticationFilter;
 import me.jaejoon.idus.auth.JwtAuthenticationProvider;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -25,6 +24,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
+    protected static final String[] PUBLIC_URIS = {
+        "/", "/h2-db/**", "/members/login", "/members/signup"
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -43,10 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             UsernamePasswordAuthenticationFilter.class
         );
 
-        // FixMe Public Url 추가해야댐 !
         http.authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/").authenticated()
-            .anyRequest().permitAll()
+            .antMatchers(PUBLIC_URIS).permitAll()
+            .anyRequest().authenticated()
             .and()
             .exceptionHandling()
             .authenticationEntryPoint(customAuthenticationEntryPoint);
