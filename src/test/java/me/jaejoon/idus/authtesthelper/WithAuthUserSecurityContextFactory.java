@@ -1,4 +1,4 @@
-package me.jaejoon.idus.member.authtesthelper;
+package me.jaejoon.idus.authtesthelper;
 
 import me.jaejoon.idus.auth.authentication.AuthUser;
 import me.jaejoon.idus.auth.authentication.JwtAuthToken;

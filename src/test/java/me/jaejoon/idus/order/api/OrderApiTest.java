@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.jaejoon.idus.auth.authentication.AuthUser;
+import me.jaejoon.idus.authtesthelper.WithAuthUser;
 import me.jaejoon.idus.error.message.ErrorCode;
-import me.jaejoon.idus.member.authtesthelper.WithAuthUser;
 import me.jaejoon.idus.order.dto.request.RequestOrderSave;
 import me.jaejoon.idus.order.repository.OrderRepository;
 import me.jaejoon.idus.order.service.OrderService;
