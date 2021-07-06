@@ -17,13 +17,13 @@ public class ResponseOrder {
 
     private String orderNumber;
     private String item;
-    private String memberEmail;
+    private String orderer;
     private LocalDateTime paymentDate;
 
     private ResponseOrder(Order order) {
         this.orderNumber = order.getOrderNumber();
         this.item = order.getItemName();
-        this.memberEmail = order.getMemberEmail();
+        this.orderer = order.getOrderer();
         this.paymentDate = order.getPaymentDate();
     }
 

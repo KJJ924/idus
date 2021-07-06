@@ -37,17 +37,16 @@ public class Order {
     @Column(name = "ITEM_NAME", nullable = false, length = 100)
     private String itemName;
 
-    @Column(name = "MEMBER_EMAIL", length = 100, nullable = false, updatable = false)
-    private String memberEmail;
-
+    @Column(name = "ORDERER", length = 100, nullable = false, updatable = false)
+    private String orderer;
     @Column(name = "PAYMENT_DATE", nullable = false)
     @CreationTimestamp
     private LocalDateTime paymentDate;
 
     @Builder
-    private Order(String orderNumber, String itemName, String memberEmail) {
+    private Order(String orderNumber, String itemName, String orderer) {
         this.orderNumber = orderNumber;
         this.itemName = itemName;
-        this.memberEmail = memberEmail;
+        this.orderer = orderer;
     }
 }

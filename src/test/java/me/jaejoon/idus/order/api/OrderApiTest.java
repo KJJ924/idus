@@ -1,14 +1,17 @@
 package me.jaejoon.idus.order.api;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.jaejoon.idus.auth.authentication.AuthUser;
+import me.jaejoon.idus.authtesthelper.WithAuthUser;
 import me.jaejoon.idus.error.message.ErrorCode;
-import me.jaejoon.idus.member.authtesthelper.WithAuthUser;
 import me.jaejoon.idus.order.dto.request.RequestOrderSave;
 import me.jaejoon.idus.order.repository.OrderRepository;
+import me.jaejoon.idus.order.service.OrderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,6 +39,9 @@ class OrderApiTest {
     @Autowired
     OrderRepository orderRepository;
 
+    @Autowired
+    OrderService orderService;
+
     @AfterEach
     void clean() {
         orderRepository.deleteAll();
@@ -59,7 +65,7 @@ class OrderApiTest {
         action.andExpect(jsonPath("$..[ 'orderNumber' ]").exists());
         action.andExpect(jsonPath("$..[ 'item' ]").value(requestOrderSave.getItem()));
         action.andExpect(jsonPath("$..[ 'paymentDate' ]").exists());
-        action.andExpect(jsonPath("$..[ 'memberEmail' ]").value("test@email.com"));
+        action.andExpect(jsonPath("$..[ 'orderer' ]").value("test@email.com"));
 
     }
 
@@ -75,6 +81,49 @@ class OrderApiTest {
         ResultActions action = mockMvc.perform(post("/orders")
             .contentType(MediaType.APPLICATION_JSON)
             .content(content));
+
+        //then
+        action.andExpect(status().isUnauthorized());
+        action.andExpect(jsonPath("$..[ 'message' ]")
+            .value(ErrorCode.NOT_EXISTENCE_OR_INVALID_TOKEN.getMessage()));
+        action.andExpect(jsonPath("$..[ 'status' ]").value(401));
+    }
+
+    @Test
+    @DisplayName("내 주문목록 보기(성공)")
+    @WithAuthUser(email = "test@email.com")
+    void myOrders() throws Exception {
+        //given
+        AuthUser authUser = new AuthUser("test@email.com", "ROLE_USER");
+        RequestOrderSave requestOrderSave = new RequestOrderSave("testItem");
+        RequestOrderSave requestOrderSave1 = new RequestOrderSave("testItem2");
+        orderService.save(requestOrderSave, authUser);
+        orderService.save(requestOrderSave1, authUser);
+
+        //when
+        ResultActions action = mockMvc.perform(get("/orders"));
+
+        //then
+        String ordersInItemName = "$..orders[?(@.item == '%s')]";
+
+        action.andExpect(status().isOk());
+        action.andExpect(jsonPath("$..[ 'totalOrdersCount' ]").value(2));
+        action.andExpect(jsonPath(ordersInItemName, "testItem").exists());
+        action.andExpect(jsonPath(ordersInItemName, "testItem2").exists());
+    }
+
+    @Test
+    @DisplayName("내 주문목록 보기(실패) - 인증객체가 없는경우 ")
+    void myOrders_fail() throws Exception {
+        //given
+        AuthUser authUser = new AuthUser("test@email.com", "ROLE_USER");
+        RequestOrderSave requestOrderSave = new RequestOrderSave("testItem");
+        RequestOrderSave requestOrderSave1 = new RequestOrderSave("testItem2");
+        orderService.save(requestOrderSave, authUser);
+        orderService.save(requestOrderSave1, authUser);
+
+        //when
+        ResultActions action = mockMvc.perform(get("/orders"));
 
         //then
         action.andExpect(status().isUnauthorized());

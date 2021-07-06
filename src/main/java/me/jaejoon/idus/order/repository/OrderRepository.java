@@ -1,5 +1,6 @@
 package me.jaejoon.idus.order.repository;
 
+import java.util.List;
 import me.jaejoon.idus.order.domain.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
+    List<Order> findByOrderer(String orderer);
 }

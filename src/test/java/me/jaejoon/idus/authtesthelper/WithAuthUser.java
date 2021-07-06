@@ -1,4 +1,4 @@
-package me.jaejoon.idus.member.authtesthelper;
+package me.jaejoon.idus.authtesthelper;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
