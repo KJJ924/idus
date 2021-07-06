@@ -1,5 +1,6 @@
 package me.jaejoon.idus.config;
 
+import me.jaejoon.idus.order.util.RandomOrderNumber;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -16,5 +17,10 @@ public class WebConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public RandomOrderNumber randomOrderNumber() {
+        return new RandomOrderNumber();
     }
 }
