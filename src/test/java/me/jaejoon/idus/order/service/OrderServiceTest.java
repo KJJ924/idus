@@ -44,7 +44,7 @@ class OrderServiceTest {
         //then
         assertThat(order.getOrderNumber()).isNotEmpty();
         assertThat(order.getOrderNumber().length()).isEqualTo(12);
-        assertThat(order.getMemberEmail()).isEqualTo("test@email.com");
+        assertThat(order.getOrderer()).isEqualTo("test@email.com");
         assertThat(order.getItem()).isEqualTo("item");
     }
 }
