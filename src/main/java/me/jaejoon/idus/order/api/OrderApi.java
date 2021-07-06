@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import me.jaejoon.idus.auth.authentication.AuthUser;
 import me.jaejoon.idus.order.dto.request.RequestOrderSave;
 import me.jaejoon.idus.order.dto.response.ResponseOrder;
+import me.jaejoon.idus.order.dto.response.ResponseOrderList;
 import me.jaejoon.idus.order.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,5 +34,10 @@ public class OrderApi {
         @AuthenticationPrincipal AuthUser authUser) {
         ResponseOrder responseOrder = orderService.save(requestOrderSave, authUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
+    }
+
+    @GetMapping
+    public ResponseEntity<ResponseOrderList> myOrders(@AuthenticationPrincipal AuthUser authUser) {
+        return ResponseEntity.ok(orderService.getOrderList(authUser));
     }
 }

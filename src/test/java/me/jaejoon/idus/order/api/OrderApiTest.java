@@ -95,8 +95,8 @@ class OrderApiTest {
     void myOrders() throws Exception {
         //given
         AuthUser authUser = new AuthUser("test@email.com", "ROLE_USER");
-        RequestOrderSave requestOrderSave = new RequestOrderSave("item");
-        RequestOrderSave requestOrderSave1 = new RequestOrderSave("item2");
+        RequestOrderSave requestOrderSave = new RequestOrderSave("testItem");
+        RequestOrderSave requestOrderSave1 = new RequestOrderSave("testItem2");
         orderService.save(requestOrderSave, authUser);
         orderService.save(requestOrderSave1, authUser);
 
@@ -104,7 +104,31 @@ class OrderApiTest {
         ResultActions action = mockMvc.perform(get("/orders"));
 
         //then
+        String ordersInItemName = "$..orders[?(@.item == '%s')]";
+
         action.andExpect(status().isOk());
         action.andExpect(jsonPath("$..[ 'totalOrdersCount' ]").value(2));
+        action.andExpect(jsonPath(ordersInItemName, "testItem").exists());
+        action.andExpect(jsonPath(ordersInItemName, "testItem2").exists());
+    }
+
+    @Test
+    @DisplayName("내 주문목록 보기(실패) - 인증객체가 없는경우 ")
+    void myOrders_fail() throws Exception {
+        //given
+        AuthUser authUser = new AuthUser("test@email.com", "ROLE_USER");
+        RequestOrderSave requestOrderSave = new RequestOrderSave("testItem");
+        RequestOrderSave requestOrderSave1 = new RequestOrderSave("testItem2");
+        orderService.save(requestOrderSave, authUser);
+        orderService.save(requestOrderSave1, authUser);
+
+        //when
+        ResultActions action = mockMvc.perform(get("/orders"));
+
+        //then
+        action.andExpect(status().isUnauthorized());
+        action.andExpect(jsonPath("$..[ 'message' ]")
+            .value(ErrorCode.NOT_EXISTENCE_OR_INVALID_TOKEN.getMessage()));
+        action.andExpect(jsonPath("$..[ 'status' ]").value(401));
     }
 }

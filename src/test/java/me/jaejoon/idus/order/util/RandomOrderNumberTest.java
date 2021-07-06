@@ -39,7 +39,7 @@ class RandomOrderNumberTest {
     }
 
     @Test
-    @DisplayName("주문번호를 생성했을때 대문자여야 한다.")
+    @DisplayName("주문번호를 생성했을때 영대문자여야 한다.")
     void createOrderNumber3() {
         //given
         RandomOrderNumber randomOrderNumber = new RandomOrderNumber();
@@ -53,5 +53,23 @@ class RandomOrderNumberTest {
         for (char c : array) {
             assertThat(Character.isUpperCase(c)).isTrue();
         }
+    }
+
+
+    @Test
+    @DisplayName("주문번호를 생성했을때 영대문자,번호 이외 포함 되어있으면 안된다.")
+    void createOrderNumber4() {
+        //given
+        RandomOrderNumber randomOrderNumber = new RandomOrderNumber();
+
+        //when
+        String orderNumber = randomOrderNumber.create();
+        String removeNumber = orderNumber.replaceAll("[0-9]", "");
+        String removeString = removeNumber.replaceAll("[A-Z]", "");
+        char[] array = removeString.toCharArray();
+
+        //then
+        assertThat(array.length).isZero();
+
     }
 }
