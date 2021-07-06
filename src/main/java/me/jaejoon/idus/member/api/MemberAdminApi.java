@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/members")
 @RequiredArgsConstructor
 public class MemberAdminApi {
 
     private final MemberAdminService memberAdminService;
 
-    @GetMapping("/members/{email}")
+    @GetMapping("/{email}")
     public ResponseEntity<ResponseMember> getMemberDetail(@PathVariable String email) {
         return ResponseEntity.ok(memberAdminService.getMemberInfo(email));
     }

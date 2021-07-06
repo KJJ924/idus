@@ -37,10 +37,10 @@ public class OrderService {
     }
 
     public ResponseOrderList getOrderList(AuthUser authUser) {
-        List<Order> orders = orderRepository.findByOrderer(authUser.getEmail());
-        List<ResponseOrder> orderList =
-            orders.stream().map(ResponseOrder::toMapper).collect(Collectors.toList());
-
-        return new ResponseOrderList(authUser.getEmail(), orderList);
+        List<ResponseOrder> orders = orderRepository.findByOrderer(authUser.getEmail())
+            .stream()
+            .map(ResponseOrder::toMapper)
+            .collect(Collectors.toList());
+        return new ResponseOrderList(authUser.getEmail(), orders);
     }
 }

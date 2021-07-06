@@ -1,10 +1,16 @@
 package me.jaejoon.idus.order.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import me.jaejoon.idus.auth.authentication.AuthUser;
+import me.jaejoon.idus.error.message.ErrorCode;
+import me.jaejoon.idus.member.domain.Gender;
+import me.jaejoon.idus.member.domain.Member;
+import me.jaejoon.idus.member.exception.NotFoundMemberException;
+import me.jaejoon.idus.member.repository.MemberRepository;
 import me.jaejoon.idus.order.dto.request.RequestOrderSave;
 import me.jaejoon.idus.order.dto.response.ResponseOrder;
 import me.jaejoon.idus.order.dto.response.ResponseOrderList;
@@ -17,12 +23,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author dkansk924@naver.com
- * @since 2021/07/06
+ * @since 2021/07/07
  */
 
-
 @SpringBootTest
-class OrderServiceTest {
+class OrderAdminServiceTest {
 
     @Autowired
     OrderRepository orderRepository;
@@ -30,45 +35,59 @@ class OrderServiceTest {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    OrderAdminService orderAdminService;
+
+    @Autowired
+    MemberRepository memberRepository;
+
     @AfterEach
     void clean() {
+        memberRepository.deleteAll();
         orderRepository.deleteAll();
     }
 
     @Test
-    @DisplayName("주문생성(성공)")
-    void save() {
+    @DisplayName("회원 주문목록 보기(성공)")
+    void getMemberList() {
         //given
-        RequestOrderSave requestOrderSave = new RequestOrderSave("item");
-        AuthUser authUser = new AuthUser("test@email.com", "ROLE_USER");
-        //when
-        ResponseOrder order = orderService.save(requestOrderSave, authUser);
-
-        //then
-        assertThat(order.getOrderNumber()).isNotEmpty();
-        assertThat(order.getOrderNumber().length()).isEqualTo(12);
-        assertThat(order.getOrderer()).isEqualTo("test@email.com");
-        assertThat(order.getItem()).isEqualTo("item");
-    }
-
-
-    @Test
-    @DisplayName("나의 주문목록 보기(성공)")
-    void myOrderList() {
-        //given
-        AuthUser authUser = new AuthUser("testUser@email.com", "ROLE_USER");
+        String targetMember = "test@email.com";
+        Member member = Member.builder()
+            .password("password")
+            .email(targetMember)
+            .nickname("nickname")
+            .name("Name")
+            .tel("01012345678")
+            .gender(Gender.NONE)
+            .build();
+        AuthUser authUser = new AuthUser(targetMember, "ROLE_USER");
         RequestOrderSave requestOrderSave = new RequestOrderSave("testItem");
         RequestOrderSave requestOrderSave1 = new RequestOrderSave("testItem2");
+        memberRepository.save(member);
         orderService.save(requestOrderSave, authUser);
         orderService.save(requestOrderSave1, authUser);
+
         //when
-        ResponseOrderList orderList = orderService.getOrderList(authUser);
+        ResponseOrderList orderList = orderAdminService.getMemberOrderList(targetMember);
         List<String> itemList = orderList.getOrders().stream()
             .map(ResponseOrder::getItem)
             .collect(Collectors.toList());
+
         //then
         assertThat(orderList.getOrderer()).isEqualTo(authUser.getEmail());
         assertThat(orderList.getTotalOrdersCount()).isEqualTo(2);
         assertThat(itemList).contains("testItem", "testItem2");
+    }
+
+    @Test
+    @DisplayName("회원 주문목록 보기(실패) - 해당회원이 존재하지않음")
+    void getMemberList_fail() {
+        //given
+        String targetMember = "test@email.com";
+        //when
+        assertThatThrownBy(() -> orderAdminService.getMemberOrderList(targetMember))
+            //then
+            .isInstanceOf(NotFoundMemberException.class)
+            .hasMessage(ErrorCode.NOT_FOUND_MEMBER.getMessage());
     }
 }
