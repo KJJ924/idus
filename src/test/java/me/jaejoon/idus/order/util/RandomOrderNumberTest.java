@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +19,7 @@ class RandomOrderNumberTest {
         //given
         RandomOrderNumber randomOrderNumber = new RandomOrderNumber();
         //when
-        String orderNumber = randomOrderNumber.create("testSymbols");
+        String orderNumber = randomOrderNumber.create();
         //then
         assertThat(orderNumber.length()).isEqualTo(12);
     }
@@ -33,7 +32,7 @@ class RandomOrderNumberTest {
         Set<String> set = new HashSet<>();
         //when
         for (int i = 0; i < 20000; i++) {
-            set.add(randomOrderNumber.create(UUID.randomUUID().toString()));
+            set.add(randomOrderNumber.create());
         }
         //then
         assertThat(set.size()).isEqualTo(20000);
@@ -46,7 +45,7 @@ class RandomOrderNumberTest {
         RandomOrderNumber randomOrderNumber = new RandomOrderNumber();
 
         //when
-        String orderNumber = randomOrderNumber.create("testSymbols");
+        String orderNumber = randomOrderNumber.create();
         String removeNumber = orderNumber.replaceAll("[0-9]", "");
         char[] array = removeNumber.toCharArray();
 
