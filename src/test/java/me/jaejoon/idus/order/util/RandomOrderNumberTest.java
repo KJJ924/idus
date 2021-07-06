@@ -38,4 +38,21 @@ class RandomOrderNumberTest {
         //then
         assertThat(set.size()).isEqualTo(20000);
     }
+
+    @Test
+    @DisplayName("주문번호를 생성했을때 대문자여야 한다.")
+    void createOrderNumber3() {
+        //given
+        RandomOrderNumber randomOrderNumber = new RandomOrderNumber();
+
+        //when
+        String orderNumber = randomOrderNumber.create("testSymbols");
+        String removeNumber = orderNumber.replaceAll("[0-9]", "");
+        char[] array = removeNumber.toCharArray();
+
+        //then
+        for (char c : array) {
+            assertThat(Character.isUpperCase(c)).isTrue();
+        }
+    }
 }
