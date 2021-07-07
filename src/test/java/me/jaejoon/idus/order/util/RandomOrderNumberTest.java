@@ -57,7 +57,7 @@ class RandomOrderNumberTest {
 
 
     @Test
-    @DisplayName("주문번호를 생성했을때 영대문자,번호 이외 포함 되어있으면 안된다.")
+    @DisplayName("주문번호를 생성했을때 영대문자,번호 이외 다른 문자가 포함되어있으면 안된다.")
     void createOrderNumber4() {
         //given
         RandomOrderNumber randomOrderNumber = new RandomOrderNumber();
