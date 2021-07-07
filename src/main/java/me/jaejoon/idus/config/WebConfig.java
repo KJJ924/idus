@@ -1,5 +1,7 @@
 package me.jaejoon.idus.config;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import javax.persistence.EntityManager;
 import me.jaejoon.idus.order.util.RandomOrderNumber;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,5 +24,10 @@ public class WebConfig {
     @Bean
     public RandomOrderNumber randomOrderNumber() {
         return new RandomOrderNumber();
+    }
+
+    @Bean
+    JPAQueryFactory jpaQueryFactory(EntityManager em) {
+        return new JPAQueryFactory(em);
     }
 }
