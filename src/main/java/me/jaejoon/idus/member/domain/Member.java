@@ -41,7 +41,7 @@ public class Member {
     @Column(name = "TEL", length = 20, nullable = false)
     private String tel;
 
-    @Column(name = "EMAIL", length = 100, nullable = false)
+    @Column(name = "EMAIL", length = 100, nullable = false, unique = true)
     private String email;
 
     @Column(name = "GENDER", nullable = false)
