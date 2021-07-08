@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected static final String[] PUBLIC_URIS = {
         "/", "/h2-db/**", "/members/login", "/members/signup", "/swagger-ui.html",
-        "/swagger-resources/**", "/configuration/ui", "/v2/api-docs"
+        "/swagger-resources/**", "/configuration/ui", "/v2/api-docs", "/webjars/**"
     };
 
     @Override
