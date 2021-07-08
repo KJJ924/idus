@@ -178,7 +178,8 @@ class MemberServiceTest {
 
         //when
         ResponseLoginToken token = memberService.login(requestMemberLogin);
-        AuthUser authUser = jwtService.decode(token.getToken());
+        String deleteBearer = token.getToken().substring(7);
+        AuthUser authUser = jwtService.decode(deleteBearer);
 
         //then
         assertThat(token).isNotNull();
