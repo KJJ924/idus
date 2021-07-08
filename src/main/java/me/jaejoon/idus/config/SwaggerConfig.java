@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.SecurityReference;
@@ -28,12 +30,23 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+            .apiInfo(apiInfo())
             .ignoredParameterTypes(AuthenticationPrincipal.class, Pageable.class)
             .securityContexts(Collections.singletonList(securityContext()))
             .securitySchemes(Collections.singletonList(apiKey()))
             .select()
             .apis(RequestHandlerSelectors.basePackage("me.jaejoon.idus"))
             .paths(PathSelectors.ant("/**"))
+            .build();
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+            .title("Idus 개발과제")
+            .description("Idus Documentation")
+            .version("1.0")
+            .license("License Version 1.0")
+            .licenseUrl("https://github.com/KJJ924/idus")
             .build();
     }
 
