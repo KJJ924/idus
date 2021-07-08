@@ -1,5 +1,6 @@
 package me.jaejoon.idus.member.dto.request;
 
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
@@ -16,10 +17,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RequestMemberLogin {
 
+    @ApiModelProperty(value = "이메일", required = true, example = "test@email.com")
     @Email
     @NotEmpty
     private String email;
 
+    @ApiModelProperty(value = "비밀번호", required = true, example = "@Abc123456")
     @NotEmpty
     private String password;
 

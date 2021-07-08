@@ -28,7 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
     protected static final String[] PUBLIC_URIS = {
-        "/", "/h2-db/**", "/members/login", "/members/signup"
+        "/", "/h2-db/**", "/members/login", "/members/signup", "/swagger-ui.html",
+        "/swagger-resources/**", "/configuration/ui", "/v2/api-docs"
     };
 
     @Override

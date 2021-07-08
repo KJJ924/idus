@@ -1,5 +1,8 @@
 package me.jaejoon.idus.member.api;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.jaejoon.idus.auth.authentication.AuthUser;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021/07/03
  */
 
+@Api(tags = "회원 관련 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
@@ -29,19 +33,24 @@ public class MemberAccountApi {
 
     private final MemberService memberService;
 
+    @ApiOperation("회원 가입")
     @PostMapping("/signup")
     public ResponseEntity<ResponseMember> save(
+        @ApiParam(value = "회원 가입 요청", required = true)
         @Valid @RequestBody RequestSaveMember requestMember) {
         ResponseMember member = memberService.save(requestMember);
         return ResponseEntity.status(HttpStatus.CREATED).body(member);
     }
 
+    @ApiOperation("로그인")
     @PostMapping("/login")
     public ResponseEntity<ResponseLoginToken> login(
+        @ApiParam(value = "로그인 요청", required = true)
         @RequestBody @Valid RequestMemberLogin requestMemberLogin) {
         return ResponseEntity.ok(memberService.login(requestMemberLogin));
     }
 
+    @ApiOperation("본인 상세정보 조회")
     @GetMapping("/personal-info")
     public ResponseEntity<ResponseMember> memberDetail(
         @AuthenticationPrincipal AuthUser authUser) {
