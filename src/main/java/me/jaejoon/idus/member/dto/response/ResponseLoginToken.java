@@ -15,6 +15,6 @@ public class ResponseLoginToken {
     private String token;
 
     public ResponseLoginToken(String token) {
-        this.token = token;
+        this.token = "Bearer " + token;
     }
 }

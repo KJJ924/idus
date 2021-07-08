@@ -1,5 +1,8 @@
 package me.jaejoon.idus.order.api;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.jaejoon.idus.auth.authentication.AuthUser;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021/07/06
  */
 
+
+@Api(tags = "주문 관련 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/orders")
@@ -28,14 +33,16 @@ public class OrderApi {
 
     private final OrderService orderService;
 
+    @ApiOperation("주문 생성")
     @PostMapping
     public ResponseEntity<ResponseOrder> orderSave(
-        @Valid @RequestBody RequestOrderSave requestOrderSave,
+        @ApiParam(value = "주문 요청", required = true) @Valid @RequestBody RequestOrderSave requestOrderSave,
         @AuthenticationPrincipal AuthUser authUser) {
         ResponseOrder responseOrder = orderService.save(requestOrderSave, authUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
     }
 
+    @ApiOperation("나의 주문 목록조회")
     @GetMapping
     public ResponseEntity<ResponseOrderList> myOrders(@AuthenticationPrincipal AuthUser authUser) {
         return ResponseEntity.ok(orderService.getOrderList(authUser));

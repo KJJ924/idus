@@ -1,5 +1,6 @@
 package me.jaejoon.idus.order.dto.request;
 
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class RequestOrderSave {
 
     @NotEmpty
+    @ApiModelProperty(value = "물품 이름", required = true, example = "모자")
     private String item;
 
     public RequestOrderSave(@NotEmpty String item) {
