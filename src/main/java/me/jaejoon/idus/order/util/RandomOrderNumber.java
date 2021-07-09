@@ -24,7 +24,7 @@ public class RandomOrderNumber {
 
     public String create() {
         String symbol = UUID.randomUUID().toString().replaceAll("-", "");
-        String s = suffix + symbol + prefix;
+        String s = prefix + symbol + suffix;
         char[] symbols = s.toCharArray();
         for (int idx = 0; idx < buf.length; ++idx) {
             buf[idx] = symbols[random.nextInt(symbols.length)];

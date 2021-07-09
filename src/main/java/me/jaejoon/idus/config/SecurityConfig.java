@@ -27,10 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
-    protected static final String[] PUBLIC_URIS = {
+    private static final String[] PUBLIC_URIS = {
         "/", "/h2-db/**", "/members/login", "/members/signup", "/swagger-ui.html",
         "/swagger-resources/**", "/configuration/ui", "/v2/api-docs", "/webjars/**"
     };
+
+    private static final String[] ADMIN_URIS = {"/admin/**"};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -52,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
             .antMatchers(PUBLIC_URIS).permitAll()
-            .antMatchers("/admin/**").hasAnyAuthority(Role.ADMIN.getValue())
+            .antMatchers(ADMIN_URIS).hasAnyAuthority(Role.ADMIN.getValue())
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()

@@ -28,7 +28,8 @@ public class OrderAdminApi {
     @ApiOperation("회원 주문목록 조회")
     @GetMapping("/{userEmail}")
     public ResponseEntity<ResponseOrderList> searchMemberOrderList(
-        @ApiParam(value = "회원 이메일", example = "test@email.com", required = true) @PathVariable String userEmail) {
+        @ApiParam(value = "회원 이메일", example = "test@email.com", required = true)
+        @PathVariable String userEmail) {
         return ResponseEntity.ok(orderAdminService.getMemberOrderList(userEmail));
     }
 }

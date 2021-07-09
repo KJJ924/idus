@@ -7,7 +7,7 @@ import me.jaejoon.idus.auth.authentication.JwtAuthToken;
 import me.jaejoon.idus.auth.authentication.NotYetJwtAuthToken;
 import me.jaejoon.idus.auth.service.JwtService;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
@@ -36,8 +36,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             AuthUser authUser = jwtService.decode(token);
             return new JwtAuthToken(authUser);
         } catch (JWTVerificationException e) {
-            //Fixme(임시) 적절한 AuthenticationException 하위 예외로 변경해야댐
-            throw new CredentialsExpiredException(e.getMessage());
+            throw new BadCredentialsException(e.getMessage());
         }
     }
 
