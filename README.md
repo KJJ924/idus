@@ -8,6 +8,7 @@
 - Spring Boot(2.5.2)
 - Spring Data JPA
 - Spring Security
+- QueryDsl
 - H2 Database
 - Gradle
 
@@ -17,7 +18,7 @@
 git clone https://github.com/KJJ924/idus.git
 cd idus
 gradle build
-java -jar idus-0.0.1-SNAPSHOT.jar
+java -jar /build/libs/idus-0.0.1-SNAPSHOT.jar
 ```
 
 # API 요청시 인증 방법
