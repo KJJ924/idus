@@ -2,6 +2,7 @@ package me.jaejoon.idus.member.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import me.jaejoon.idus.member.domain.code.Gender;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

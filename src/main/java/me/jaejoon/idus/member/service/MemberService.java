@@ -29,12 +29,12 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public ResponseMember save(RequestSaveMember requestSaveMember) {
+    public ResponseMember signUp(RequestSaveMember requestSaveMember) {
         memberSaveValidationCheck(requestSaveMember);
-        String encodePW = passwordEncoder.encode(requestSaveMember.getPassword());
 
-        Member member = requestSaveMember.toEntity();
-        member.updatePassword(encodePW);
+        String encodePassword = passwordEncoder.encode(requestSaveMember.getPassword());
+        Member member = requestSaveMember.toEntity(encodePassword);
+
         memberRepository.save(member);
 
         return ResponseMember.toMapper(member);
@@ -50,11 +50,11 @@ public class MemberService {
     }
 
     public ResponseMember getMemberDetail(AuthUser authUser) {
-        Member member = findByEmailMember(authUser.getEmail());
+        Member member = findMemberBy(authUser.getEmail());
         return ResponseMember.toMapper(member);
     }
 
-    private Member findByEmailMember(String email) {
+    private Member findMemberBy(String email) {
         return memberRepository.findByEmail(email)
             .orElseThrow(NotFoundMemberException::new);
     }

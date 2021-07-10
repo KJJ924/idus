@@ -1,4 +1,4 @@
-package me.jaejoon.idus.order.util;
+package me.jaejoon.idus.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

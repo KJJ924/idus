@@ -19,14 +19,14 @@ public class ResponseOrder {
 
     private String orderNumber;
     private String item;
-    private String orderer;
-    private LocalDateTime paymentDate;
+    private String consumer;
+    private LocalDateTime paymentDateTime;
 
     private ResponseOrder(Order order) {
         this.orderNumber = order.getOrderNumber();
         this.item = order.getItemName();
-        this.orderer = order.getOrderer();
-        this.paymentDate = order.getPaymentDate();
+        this.consumer = order.getConsumer();
+        this.paymentDateTime = order.getPaymentDateTime();
     }
 
     public static ResponseOrder toMapper(Order order) {

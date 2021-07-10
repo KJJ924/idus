@@ -30,6 +30,7 @@ public class OrderAdminApi {
     public ResponseEntity<ResponseOrderList> searchMemberOrderList(
         @ApiParam(value = "회원 이메일", example = "test@email.com", required = true)
         @PathVariable String userEmail) {
-        return ResponseEntity.ok(orderAdminService.getMemberOrderList(userEmail));
+        ResponseOrderList memberOrderList = orderAdminService.getMemberOrderList(userEmail);
+        return ResponseEntity.ok(memberOrderList);
     }
 }

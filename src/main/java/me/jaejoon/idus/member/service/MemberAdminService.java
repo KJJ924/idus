@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import me.jaejoon.idus.member.domain.Member;
 import me.jaejoon.idus.member.dto.request.RequestMemberSearch;
 import me.jaejoon.idus.member.dto.response.ResponseMember;
+import me.jaejoon.idus.member.dto.response.ResponseMemberList;
 import me.jaejoon.idus.member.dto.response.ResponseMembersPaging;
 import me.jaejoon.idus.member.exception.NotFoundMemberException;
 import me.jaejoon.idus.member.repository.MemberRepository;
 import me.jaejoon.idus.member.repository.MemberSearchRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -25,19 +27,22 @@ public class MemberAdminService {
 
 
     public ResponseMember getMemberInfo(String email) {
-        return ResponseMember.toMapper(findByEmailMember(email));
+        Member member = findMemberBy(email);
+
+        return ResponseMember.toMapper(member);
     }
 
-    public ResponseMembersPaging getMemberListIncludingLastOrders(
-        RequestMemberSearch search, Pageable pageable) {
-        return ResponseMembersPaging
-            .toMapper(memberSearchRepository.getMembersIncludingLastOrder(search, pageable));
+    public ResponseMembersPaging getMemberListIncludingLastOrders(RequestMemberSearch search,
+        Pageable pageable) {
+
+        Page<ResponseMemberList> membersIncludingLastOrder = memberSearchRepository
+            .getMembersIncludingLastOrder(search, pageable);
+
+        return ResponseMembersPaging.toMapper(membersIncludingLastOrder);
     }
 
-    private Member findByEmailMember(String email) {
+    private Member findMemberBy(String email) {
         return memberRepository.findByEmail(email)
             .orElseThrow(NotFoundMemberException::new);
     }
-
-
 }

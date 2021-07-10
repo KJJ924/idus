@@ -9,7 +9,7 @@ import me.jaejoon.idus.order.dto.request.RequestOrderSave;
 import me.jaejoon.idus.order.dto.response.ResponseOrder;
 import me.jaejoon.idus.order.dto.response.ResponseOrderList;
 import me.jaejoon.idus.order.repository.OrderRepository;
-import me.jaejoon.idus.order.util.RandomOrderNumber;
+import me.jaejoon.idus.util.RandomOrderNumber;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,7 +28,7 @@ public class OrderService {
         Order order = Order.builder()
             .orderNumber(randomOrderNumber.create())
             .itemName(requestOrderSave.getItem())
-            .orderer(authUser.getEmail())
+            .consumer(authUser.getEmail())
             .build();
 
         orderRepository.save(order);
@@ -37,7 +37,7 @@ public class OrderService {
     }
 
     public ResponseOrderList getOrderList(AuthUser authUser) {
-        List<ResponseOrder> orders = orderRepository.findByOrderer(authUser.getEmail())
+        List<ResponseOrder> orders = orderRepository.findByConsumer(authUser.getEmail())
             .stream()
             .map(ResponseOrder::toMapper)
             .collect(Collectors.toList());

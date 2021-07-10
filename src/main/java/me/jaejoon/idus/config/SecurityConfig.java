@@ -5,7 +5,7 @@ import me.jaejoon.idus.auth.CustomAccessDeniedHandler;
 import me.jaejoon.idus.auth.CustomAuthenticationEntryPoint;
 import me.jaejoon.idus.auth.JwtAuthenticationFilter;
 import me.jaejoon.idus.auth.JwtAuthenticationProvider;
-import me.jaejoon.idus.member.domain.Role;
+import me.jaejoon.idus.member.domain.code.Role;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

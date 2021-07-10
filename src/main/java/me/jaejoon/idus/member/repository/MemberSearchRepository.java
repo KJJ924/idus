@@ -42,13 +42,14 @@ public class MemberSearchRepository {
                 member.gender,
                 o.orderNumber,
                 o.itemName,
-                o.orderer,
-                o.paymentDate))
+                o.consumer,
+                o.paymentDateTime))
             .from(member)
-            .leftJoin(o).on(member.email.eq(o.orderer))
-            .leftJoin(o2).on(member.email.eq(o2.orderer).and(o.paymentDate.before(o2.paymentDate)))
+            .leftJoin(o).on(member.email.eq(o.consumer))
+            .leftJoin(o2)
+            .on(member.email.eq(o2.consumer).and(o.paymentDateTime.before(o2.paymentDateTime)))
             .where(
-                o2.paymentDate.isNull(),
+                o2.paymentDateTime.isNull(),
                 eqMemberName(search.getName()),
                 eqMemberEmail(search.getEmail())
             )

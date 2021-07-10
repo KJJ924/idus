@@ -35,10 +35,10 @@ public class MemberAccountApi {
 
     @ApiOperation("회원 가입")
     @PostMapping("/signup")
-    public ResponseEntity<ResponseMember> save(
+    public ResponseEntity<ResponseMember> signUp(
         @ApiParam(value = "회원 가입 요청", required = true)
         @Valid @RequestBody RequestSaveMember requestMember) {
-        ResponseMember member = memberService.save(requestMember);
+        ResponseMember member = memberService.signUp(requestMember);
         return ResponseEntity.status(HttpStatus.CREATED).body(member);
     }
 
@@ -47,7 +47,8 @@ public class MemberAccountApi {
     public ResponseEntity<ResponseLoginToken> login(
         @ApiParam(value = "로그인 요청", required = true)
         @RequestBody @Valid RequestMemberLogin requestMemberLogin) {
-        return ResponseEntity.ok(memberService.login(requestMemberLogin));
+        ResponseLoginToken loginToken = memberService.login(requestMemberLogin);
+        return ResponseEntity.ok(loginToken);
     }
 
     @ApiOperation("본인 상세정보 조회")

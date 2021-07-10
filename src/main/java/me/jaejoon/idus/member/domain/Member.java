@@ -12,6 +12,8 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.jaejoon.idus.member.domain.code.Gender;
+import me.jaejoon.idus.member.domain.code.Role;
 
 /**
  * @author dkansk924@naver.com
@@ -32,7 +34,7 @@ public class Member {
     @Column(name = "NAME", length = 20, nullable = false)
     private String name;
 
-    @Column(name = "NICK_NAME", unique = true, length = 30, nullable = false)
+    @Column(name = "NICKNAME", unique = true, length = 30, nullable = false)
     private String nickname;
 
     @Column(name = "PASSWORD", nullable = false)
@@ -62,9 +64,5 @@ public class Member {
         this.email = email;
         this.gender = gender;
         this.role = role;
-    }
-
-    public void updatePassword(String newPassword) {
-        this.password = newPassword;
     }
 }

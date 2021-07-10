@@ -11,9 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jaejoon.idus.error.message.FieldValidErrorMessages;
-import me.jaejoon.idus.member.domain.Gender;
 import me.jaejoon.idus.member.domain.Member;
-import me.jaejoon.idus.member.domain.Role;
+import me.jaejoon.idus.member.domain.code.Gender;
+import me.jaejoon.idus.member.domain.code.Role;
 
 /**
  * @author dkansk924@naver.com
@@ -62,11 +62,11 @@ public class RequestSaveMember {
     @NotNull
     private Role role;
 
-    public Member toEntity() {
+    public Member toEntity(String encodingPassword) {
         return Member.builder()
             .name(name)
             .nickname(nickname)
-            .password(password)
+            .password(encodingPassword)
             .tel(tel)
             .email(email)
             .gender(gender)

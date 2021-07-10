@@ -64,8 +64,8 @@ class OrderApiTest {
         action.andExpect(status().isCreated());
         action.andExpect(jsonPath("$..[ 'orderNumber' ]").exists());
         action.andExpect(jsonPath("$..[ 'item' ]").value(requestOrderSave.getItem()));
-        action.andExpect(jsonPath("$..[ 'paymentDate' ]").exists());
-        action.andExpect(jsonPath("$..[ 'orderer' ]").value("test@email.com"));
+        action.andExpect(jsonPath("$..[ 'paymentDateTime' ]").exists());
+        action.andExpect(jsonPath("$..[ 'consumer' ]").value("test@email.com"));
 
     }
 

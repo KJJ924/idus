@@ -4,7 +4,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jaejoon.idus.member.domain.Gender;
+import me.jaejoon.idus.member.domain.code.Gender;
 import me.jaejoon.idus.order.dto.response.ResponseOrder;
 
 /**
@@ -30,12 +30,13 @@ public class ResponseMemberList {
 
     @QueryProjection
     public ResponseMemberList(String name, String nickname, String tel, String email,
-        Gender gender, String orderNumber, String item, String orderer, LocalDateTime paymentDate) {
+        Gender gender, String orderNumber, String item, String consumer,
+        LocalDateTime paymentDateTime) {
         this.name = name;
         this.nickname = nickname;
         this.tel = tel;
         this.email = email;
         this.gender = gender.getName();
-        this.lastOrder = new ResponseOrder(orderNumber, item, orderer, paymentDate);
+        this.lastOrder = new ResponseOrder(orderNumber, item, consumer, paymentDateTime);
     }
 }

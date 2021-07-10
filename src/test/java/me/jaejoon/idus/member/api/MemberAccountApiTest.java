@@ -9,9 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.jaejoon.idus.authtesthelper.WithAuthUser;
 import me.jaejoon.idus.error.message.ErrorCode;
-import me.jaejoon.idus.member.domain.Gender;
 import me.jaejoon.idus.member.domain.Member;
-import me.jaejoon.idus.member.domain.Role;
+import me.jaejoon.idus.member.domain.code.Gender;
+import me.jaejoon.idus.member.domain.code.Role;
 import me.jaejoon.idus.member.dto.request.RequestMemberLogin;
 import me.jaejoon.idus.member.dto.request.RequestSaveMember;
 import me.jaejoon.idus.member.repository.MemberRepository;
@@ -176,7 +176,7 @@ class MemberAccountApiTest {
                 "test@email.com",
                 Gender.NONE,
                 Role.USER);
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
 
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
             .email("test@email.com")
@@ -209,7 +209,7 @@ class MemberAccountApiTest {
                 "test@email.com",
                 Gender.NONE,
                 Role.USER);
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
 
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
             .email("test@email.com")
@@ -242,7 +242,7 @@ class MemberAccountApiTest {
                 "test@email.com",
                 Gender.NONE,
                 Role.USER);
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
 
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
             .email("kjj@email.com") // errorPoint
@@ -275,7 +275,7 @@ class MemberAccountApiTest {
                 "test@email.com",
                 Gender.NONE,
                 Role.USER);
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
 
         //when
         ResultActions actions = mockMvc.perform(get("/members/personal-info")
@@ -302,7 +302,7 @@ class MemberAccountApiTest {
                 "test@email.com",
                 Gender.NONE,
                 Role.USER);
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
 
         //when
         ResultActions actions = mockMvc.perform(get("/members/personal-info"));

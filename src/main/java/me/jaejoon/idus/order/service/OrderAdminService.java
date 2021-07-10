@@ -27,7 +27,7 @@ public class OrderAdminService {
             throw new NotFoundMemberException();
         }
 
-        List<ResponseOrder> orders = orderRepository.findByOrderer(userEmail)
+        List<ResponseOrder> orders = orderRepository.findByConsumer(userEmail)
             .stream()
             .map(ResponseOrder::toMapper)
             .collect(Collectors.toList());

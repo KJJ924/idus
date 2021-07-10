@@ -45,6 +45,7 @@ public class OrderApi {
     @ApiOperation("나의 주문 목록조회")
     @GetMapping
     public ResponseEntity<ResponseOrderList> myOrders(@AuthenticationPrincipal AuthUser authUser) {
-        return ResponseEntity.ok(orderService.getOrderList(authUser));
+        ResponseOrderList orderList = orderService.getOrderList(authUser);
+        return ResponseEntity.ok(orderList);
     }
 }

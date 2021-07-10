@@ -35,17 +35,16 @@ public class MemberAdminApi {
     public ResponseEntity<ResponseMember> getMemberDetail(
         @ApiParam(value = "회원 이메일", example = "test@email.com", required = true)
         @PathVariable String email) {
-        return ResponseEntity.ok(memberAdminService.getMemberInfo(email));
+        ResponseMember member = memberAdminService.getMemberInfo(email);
+        return ResponseEntity.ok(member);
     }
 
     @ApiOperation("회원리스트 조회(마지막 주문 포함)")
     @GetMapping
     public ResponseEntity<ResponseMembersPaging> getMemberList(
         RequestMemberSearch requestMemberSearch, @PageableDefault(size = 6) Pageable pageable) {
-
         ResponseMembersPaging response =
             memberAdminService.getMemberListIncludingLastOrders(requestMemberSearch, pageable);
-
         return ResponseEntity.ok(response);
     }
 }

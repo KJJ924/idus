@@ -2,7 +2,7 @@ package me.jaejoon.idus.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import javax.persistence.EntityManager;
-import me.jaejoon.idus.order.util.RandomOrderNumber;
+import me.jaejoon.idus.util.RandomOrderNumber;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;

@@ -7,9 +7,9 @@ import java.util.Optional;
 import me.jaejoon.idus.auth.authentication.AuthUser;
 import me.jaejoon.idus.auth.service.JwtService;
 import me.jaejoon.idus.error.message.ErrorCode;
-import me.jaejoon.idus.member.domain.Gender;
 import me.jaejoon.idus.member.domain.Member;
-import me.jaejoon.idus.member.domain.Role;
+import me.jaejoon.idus.member.domain.code.Gender;
+import me.jaejoon.idus.member.domain.code.Role;
 import me.jaejoon.idus.member.dto.request.RequestMemberLogin;
 import me.jaejoon.idus.member.dto.request.RequestSaveMember;
 import me.jaejoon.idus.member.dto.response.ResponseLoginToken;
@@ -61,7 +61,7 @@ class MemberServiceTest {
                 Gender.NONE,
                 Role.USER);
         //when
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
 
         //then
         Optional<Member> member = memberRepository.findByEmail(requestSaveMember.getEmail());
@@ -84,7 +84,7 @@ class MemberServiceTest {
                 Gender.NONE,
                 Role.USER);
         //when
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
 
         //then
         Optional<Member> member = memberRepository.findByEmail(requestSaveMember.getEmail());
@@ -117,7 +117,7 @@ class MemberServiceTest {
                 Role.USER);
 
         //when
-        assertThatThrownBy(() -> memberService.save(requestSaveMember))
+        assertThatThrownBy(() -> memberService.signUp(requestSaveMember))
 
             //then
             .isInstanceOf(DuplicateEmailException.class)
@@ -149,7 +149,7 @@ class MemberServiceTest {
                 Role.USER);
 
         //when
-        assertThatThrownBy(() -> memberService.save(requestSaveMember))
+        assertThatThrownBy(() -> memberService.signUp(requestSaveMember))
 
             //then
             .isInstanceOf(DuplicateNickname.class)
@@ -170,7 +170,7 @@ class MemberServiceTest {
                 "test@email.com",
                 Gender.NONE,
                 Role.USER);
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
             .email("test@email.com")
             .password("@Abcdef0123")
@@ -199,7 +199,7 @@ class MemberServiceTest {
                 "test@email.com",
                 Gender.NONE,
                 Role.USER);
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
             .email("test@email.com")
             .password("@bbb1234") //error point
@@ -226,7 +226,7 @@ class MemberServiceTest {
                 "test@email.com",
                 Gender.NONE,
                 Role.USER);
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
         RequestMemberLogin requestMemberLogin = RequestMemberLogin.builder()
             .email("kjj@email.com") //error point
             .password("@Abcdef0123")
@@ -253,7 +253,7 @@ class MemberServiceTest {
                 "test@email.com",
                 Gender.NONE,
                 Role.USER);
-        memberService.save(requestSaveMember);
+        memberService.signUp(requestSaveMember);
 
         AuthUser user = new AuthUser("test@email.com", Role.USER.getValue());
 

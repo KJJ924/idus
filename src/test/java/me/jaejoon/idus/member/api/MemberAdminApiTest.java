@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.jaejoon.idus.authtesthelper.WithAuthUser;
 import me.jaejoon.idus.error.message.ErrorCode;
-import me.jaejoon.idus.member.domain.Gender;
 import me.jaejoon.idus.member.domain.Member;
+import me.jaejoon.idus.member.domain.code.Gender;
 import me.jaejoon.idus.member.repository.MemberRepository;
 import me.jaejoon.idus.order.domain.Order;
 import me.jaejoon.idus.order.repository.OrderRepository;
@@ -131,7 +131,7 @@ class MemberAdminApiTest {
         Order order = Order.builder()
             .orderNumber("ABCD2FG12345")
             .itemName("item")
-            .orderer("test@test.com")
+            .consumer("test@test.com")
             .build();
 
         orderRepository.save(order);
@@ -148,7 +148,7 @@ class MemberAdminApiTest {
         action.andExpect(jsonPath("$..[ 'email' ]").value(member.getEmail()));
         action.andExpect(jsonPath("$..[ 'orderNumber' ]").value(order.getOrderNumber()));
         action.andExpect(jsonPath("$..[ 'item' ]").value(order.getItemName()));
-        action.andExpect(jsonPath("$..[ 'orderer' ]").value(order.getOrderer()));
+        action.andExpect(jsonPath("$..[ 'consumer' ]").value(order.getConsumer()));
         action.andExpect(jsonPath("$..[ 'totalPage' ]").value(1));
         action.andExpect(jsonPath("$..[ 'elementsSize' ]").value(1));
         action.andExpect(jsonPath("$..[ 'pageSize' ]").value(6));
@@ -181,7 +181,7 @@ class MemberAdminApiTest {
         Order order = Order.builder()
             .orderNumber("ABCD2FG12345")
             .itemName("item")
-            .orderer("test@test.com")
+            .consumer("test@test.com")
             .build();
 
         orderRepository.save(order);
@@ -198,7 +198,7 @@ class MemberAdminApiTest {
         action.andExpect(jsonPath("$..[ 'email' ]").value(member.getEmail()));
         action.andExpect(jsonPath("$..[ 'orderNumber' ]").value(order.getOrderNumber()));
         action.andExpect(jsonPath("$..[ 'item' ]").value(order.getItemName()));
-        action.andExpect(jsonPath("$..[ 'orderer' ]").value(order.getOrderer()));
+        action.andExpect(jsonPath("$..[ 'consumer' ]").value(order.getConsumer()));
         action.andExpect(jsonPath("$..[ 'totalPage' ]").value(1));
         action.andExpect(jsonPath("$..[ 'elementsSize' ]").value(1));
         action.andExpect(jsonPath("$..[ 'pageSize' ]").value(6));
@@ -231,7 +231,7 @@ class MemberAdminApiTest {
         Order order = Order.builder()
             .orderNumber("ABCD2FG12345")
             .itemName("item")
-            .orderer("test@test.com")
+            .consumer("test@test.com")
             .build();
 
         orderRepository.save(order);
@@ -248,7 +248,7 @@ class MemberAdminApiTest {
         action.andExpect(jsonPath("$..[ 'email' ]").value(member.getEmail()));
         action.andExpect(jsonPath("$..[ 'orderNumber' ]").value(order.getOrderNumber()));
         action.andExpect(jsonPath("$..[ 'item' ]").value(order.getItemName()));
-        action.andExpect(jsonPath("$..[ 'orderer' ]").value(order.getOrderer()));
+        action.andExpect(jsonPath("$..[ 'consumer' ]").value(order.getConsumer()));
         action.andExpect(jsonPath("$..[ 'totalPage' ]").value(1));
         action.andExpect(jsonPath("$..[ 'elementsSize' ]").value(1));
         action.andExpect(jsonPath("$..[ 'pageSize' ]").value(6));
@@ -272,13 +272,13 @@ class MemberAdminApiTest {
         Order order = Order.builder()
             .orderNumber("ABCD2FG12345")
             .itemName("item")
-            .orderer("test@test.com")
+            .consumer("test@test.com")
             .build();
 
         Order resentOrder = Order.builder()
             .orderNumber("FDA12342345")
             .itemName("idus")
-            .orderer("test@test.com")
+            .consumer("test@test.com")
             .build();
         orderRepository.save(order);
         orderRepository.save(resentOrder);
@@ -295,7 +295,7 @@ class MemberAdminApiTest {
         action.andExpect(jsonPath("$..[ 'email' ]").value(member.getEmail()));
         action.andExpect(jsonPath("$..[ 'orderNumber' ]").value(resentOrder.getOrderNumber()));
         action.andExpect(jsonPath("$..[ 'item' ]").value(resentOrder.getItemName()));
-        action.andExpect(jsonPath("$..[ 'orderer' ]").value(resentOrder.getOrderer()));
+        action.andExpect(jsonPath("$..[ 'consumer' ]").value(resentOrder.getConsumer()));
         action.andExpect(jsonPath("$..[ 'totalPage' ]").value(1));
         action.andExpect(jsonPath("$..[ 'elementsSize' ]").value(1));
         action.andExpect(jsonPath("$..[ 'pageSize' ]").value(6));
