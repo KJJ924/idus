@@ -46,7 +46,7 @@ public class MemberAccountApi {
     @PostMapping("/login")
     public ResponseEntity<ResponseLoginToken> login(
         @ApiParam(value = "로그인 요청", required = true)
-        @RequestBody @Valid RequestMemberLogin requestMemberLogin) {
+        @Valid @RequestBody RequestMemberLogin requestMemberLogin) {
         ResponseLoginToken loginToken = memberService.login(requestMemberLogin);
         return ResponseEntity.ok(loginToken);
     }

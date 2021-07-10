@@ -1,10 +1,10 @@
 package me.jaejoon.idus.config;
 
 import lombok.RequiredArgsConstructor;
-import me.jaejoon.idus.auth.CustomAccessDeniedHandler;
-import me.jaejoon.idus.auth.CustomAuthenticationEntryPoint;
 import me.jaejoon.idus.auth.JwtAuthenticationFilter;
 import me.jaejoon.idus.auth.JwtAuthenticationProvider;
+import me.jaejoon.idus.auth.exception.handler.CustomAccessDeniedHandler;
+import me.jaejoon.idus.auth.exception.handler.CustomAuthenticationEntryPoint;
 import me.jaejoon.idus.member.domain.code.Role;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

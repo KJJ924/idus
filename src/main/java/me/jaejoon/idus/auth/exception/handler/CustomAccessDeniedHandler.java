@@ -1,4 +1,4 @@
-package me.jaejoon.idus.auth;
+package me.jaejoon.idus.auth.exception.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
