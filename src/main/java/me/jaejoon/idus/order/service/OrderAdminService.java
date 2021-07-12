@@ -23,9 +23,7 @@ public class OrderAdminService {
     private final OrderRepository orderRepository;
 
     public ResponseOrderList getMemberOrderList(String userEmail) {
-        if (!memberRepository.existsByEmail(userEmail)) {
-            throw new NotFoundMemberException();
-        }
+        existsMemberBy(userEmail);
 
         List<ResponseOrder> orders = orderRepository.findByConsumer(userEmail)
             .stream()
@@ -35,5 +33,10 @@ public class OrderAdminService {
         return new ResponseOrderList(userEmail, orders);
     }
 
+    private void existsMemberBy(String userEmail) {
+        if (!memberRepository.existsByEmail(userEmail)) {
+            throw new NotFoundMemberException();
+        }
+    }
 
 }
