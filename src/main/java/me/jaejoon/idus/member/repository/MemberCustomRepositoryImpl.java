@@ -23,11 +23,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberSearchRepository {
+public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
 
+    @Override
     public Page<ResponseMemberList> getMembersIncludingLastOrder(
         RequestMemberSearch search, Pageable pageable) {
 

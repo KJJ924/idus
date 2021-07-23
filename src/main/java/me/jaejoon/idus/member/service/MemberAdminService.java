@@ -8,7 +8,6 @@ import me.jaejoon.idus.member.dto.response.ResponseMemberList;
 import me.jaejoon.idus.member.dto.response.ResponseMembersPaging;
 import me.jaejoon.idus.member.exception.NotFoundMemberException;
 import me.jaejoon.idus.member.repository.MemberRepository;
-import me.jaejoon.idus.member.repository.MemberSearchRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 public class MemberAdminService {
 
     private final MemberRepository memberRepository;
-    private final MemberSearchRepository memberSearchRepository;
 
 
     public ResponseMember getMemberInfo(String email) {
@@ -35,7 +33,7 @@ public class MemberAdminService {
     public ResponseMembersPaging getMemberListIncludingLastOrders(RequestMemberSearch search,
         Pageable pageable) {
 
-        Page<ResponseMemberList> membersIncludingLastOrder = memberSearchRepository
+        Page<ResponseMemberList> membersIncludingLastOrder = memberRepository
             .getMembersIncludingLastOrder(search, pageable);
 
         return ResponseMembersPaging.toMapper(membersIncludingLastOrder);

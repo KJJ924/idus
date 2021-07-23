@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 2021/07/03
  */
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberCustomRepository {
 
     boolean existsByEmail(String email);
 
