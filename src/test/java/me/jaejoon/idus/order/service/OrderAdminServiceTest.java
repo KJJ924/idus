@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import me.jaejoon.idus.auth.authentication.AuthUser;
 import me.jaejoon.idus.error.message.ErrorCode;
 import me.jaejoon.idus.member.domain.Member;
-import me.jaejoon.idus.member.domain.code.Gender;
+import me.jaejoon.idus.member.domain.types.Gender;
 import me.jaejoon.idus.member.exception.NotFoundMemberException;
 import me.jaejoon.idus.member.repository.MemberRepository;
 import me.jaejoon.idus.order.dto.request.RequestOrderSave;

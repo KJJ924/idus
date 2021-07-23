@@ -1,4 +1,4 @@
-package me.jaejoon.idus.member.domain.code;
+package me.jaejoon.idus.member.domain.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Arrays;

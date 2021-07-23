@@ -12,8 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jaejoon.idus.error.message.FieldValidErrorMessages;
 import me.jaejoon.idus.member.domain.Member;
-import me.jaejoon.idus.member.domain.code.Gender;
-import me.jaejoon.idus.member.domain.code.Role;
+import me.jaejoon.idus.member.domain.types.Gender;
+import me.jaejoon.idus.member.domain.types.Role;
 
 /**
  * @author dkansk924@naver.com

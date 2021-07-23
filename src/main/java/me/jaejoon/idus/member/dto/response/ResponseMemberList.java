@@ -4,7 +4,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jaejoon.idus.member.domain.code.Gender;
+import me.jaejoon.idus.member.domain.types.Gender;
 import me.jaejoon.idus.order.dto.response.ResponseOrder;
 
 /**
