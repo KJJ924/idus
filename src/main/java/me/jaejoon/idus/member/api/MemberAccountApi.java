@@ -55,7 +55,7 @@ public class MemberAccountApi {
     @GetMapping("/personal-info")
     public ResponseEntity<ResponseMember> memberDetail(
         @AuthenticationPrincipal AuthUser authUser) {
-        ResponseMember member = memberService.getMemberDetail(authUser);
+        ResponseMember member = memberService.getMyInfo(authUser);
         return ResponseEntity.ok(member);
     }
 

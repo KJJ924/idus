@@ -5,14 +5,19 @@ import me.jaejoon.idus.auth.authentication.AuthUser;
 import me.jaejoon.idus.auth.service.JwtService;
 import me.jaejoon.idus.member.domain.Member;
 import me.jaejoon.idus.member.dto.request.RequestMemberLogin;
+import me.jaejoon.idus.member.dto.request.RequestMemberSearch;
 import me.jaejoon.idus.member.dto.request.RequestSaveMember;
 import me.jaejoon.idus.member.dto.response.ResponseLoginToken;
 import me.jaejoon.idus.member.dto.response.ResponseMember;
+import me.jaejoon.idus.member.dto.response.ResponseMemberList;
+import me.jaejoon.idus.member.dto.response.ResponseMembersPaging;
 import me.jaejoon.idus.member.exception.DuplicateEmailException;
 import me.jaejoon.idus.member.exception.DuplicateNickname;
 import me.jaejoon.idus.member.exception.LoginFailedException;
 import me.jaejoon.idus.member.exception.NotFoundMemberException;
 import me.jaejoon.idus.member.repository.MemberRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,9 +54,23 @@ public class MemberService {
         return new ResponseLoginToken(jwtService.encode(member));
     }
 
-    public ResponseMember getMemberDetail(AuthUser authUser) {
+    public ResponseMember getMyInfo(AuthUser authUser) {
         Member member = findMemberBy(authUser.getEmail());
         return ResponseMember.toMapper(member);
+    }
+
+    public ResponseMember getMemberInfo(String email) {
+        Member member = findMemberBy(email);
+        return ResponseMember.toMapper(member);
+    }
+
+    public ResponseMembersPaging getMemberListIncludingLastOrders(RequestMemberSearch search,
+        Pageable pageable) {
+
+        Page<ResponseMemberList> membersIncludingLastOrder = memberRepository
+            .getMembersIncludingLastOrder(search, pageable);
+
+        return ResponseMembersPaging.toMapper(membersIncludingLastOrder);
     }
 
     private Member findMemberBy(String email) {

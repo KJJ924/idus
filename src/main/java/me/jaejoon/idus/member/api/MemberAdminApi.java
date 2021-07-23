@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import me.jaejoon.idus.member.dto.request.RequestMemberSearch;
 import me.jaejoon.idus.member.dto.response.ResponseMember;
 import me.jaejoon.idus.member.dto.response.ResponseMembersPaging;
-import me.jaejoon.idus.member.service.MemberAdminService;
+import me.jaejoon.idus.member.service.MemberService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +28,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberAdminApi {
 
-    private final MemberAdminService memberAdminService;
+    private final MemberService memberService;
 
     @ApiOperation("회원상세 정보조회")
     @GetMapping("/{email}")
     public ResponseEntity<ResponseMember> getMemberDetail(
         @ApiParam(value = "회원 이메일", example = "test@email.com", required = true)
         @PathVariable String email) {
-        ResponseMember member = memberAdminService.getMemberInfo(email);
+        ResponseMember member = memberService.getMemberInfo(email);
         return ResponseEntity.ok(member);
     }
 
@@ -44,7 +44,7 @@ public class MemberAdminApi {
     public ResponseEntity<ResponseMembersPaging> getMemberList(
         RequestMemberSearch requestMemberSearch, @PageableDefault(size = 6) Pageable pageable) {
         ResponseMembersPaging response =
-            memberAdminService.getMemberListIncludingLastOrders(requestMemberSearch, pageable);
+            memberService.getMemberListIncludingLastOrders(requestMemberSearch, pageable);
         return ResponseEntity.ok(response);
     }
 }

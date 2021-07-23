@@ -258,7 +258,7 @@ class MemberServiceTest {
         AuthUser user = new AuthUser("test@email.com", Role.USER.getValue());
 
         //when
-        ResponseMember member = memberService.getMemberDetail(user);
+        ResponseMember member = memberService.getMyInfo(user);
 
         //then
         assertThat(member.getEmail()).isEqualTo(requestSaveMember.getEmail());
@@ -273,7 +273,7 @@ class MemberServiceTest {
         //given
         AuthUser user = new AuthUser("test@email.com", Role.USER.getValue());
         //when
-        assertThatThrownBy(() -> memberService.getMemberDetail(user))
+        assertThatThrownBy(() -> memberService.getMyInfo(user))
             //then
             .isInstanceOf(NotFoundMemberException.class)
             .hasMessage(ErrorCode.NOT_FOUND_MEMBER.getMessage());
